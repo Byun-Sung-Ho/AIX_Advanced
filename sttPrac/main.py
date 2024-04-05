@@ -28,7 +28,7 @@ def ver1():
         if "이상입니다" in text:
             break
 
-        time.sleep(0.1)
+        time.sleep(0.05)
 def ver2():
     # 오디오 녹음 설정
     FORMAT = pyaudio.paInt16  # 16비트 PCM 형식으로 녹음
@@ -85,3 +85,5 @@ def ver2():
             print(text)
         except Exception as e:
             print("Exception: " + str(e))
+
+ver2()
