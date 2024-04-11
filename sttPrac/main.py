@@ -3,7 +3,9 @@ import os
 import time
 import pyaudio
 import wave
-
+import google.generativeai as genai
+import openai
+import os
 
 def getAudio():
     r = sr.Recognizer()
@@ -82,8 +84,14 @@ def ver2():
 
         try:
             text = recognizer.recognize_google(audio_data, language="ko-KR")
-            print(text)
+            with open("memo.txt", 'w') as f:
+                f.write(str(text)+'\n')
+            return text
+            # print(text)
         except Exception as e:
             print("Exception: " + str(e))
 
-ver2()
+genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+model = genai.GenerativeModel('gemini-pro')
+response = model.generate_content(ver2())
+print(response.text)
