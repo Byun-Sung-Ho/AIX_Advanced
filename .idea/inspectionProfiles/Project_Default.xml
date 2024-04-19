@@ -1,0 +1,30 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="17">
+            <item index="0" class="java.lang.String" itemvalue="actionlib-msgs" />
+            <item index="1" class="java.lang.String" itemvalue="ament-uncrustify" />
+            <item index="2" class="java.lang.String" itemvalue="action-msgs" />
+            <item index="3" class="java.lang.String" itemvalue="ament-lint" />
+            <item index="4" class="java.lang.String" itemvalue="ament-cmake-test" />
+            <item index="5" class="java.lang.String" itemvalue="ament-flake8" />
+            <item index="6" class="java.lang.String" itemvalue="ament-index-python" />
+            <item index="7" class="java.lang.String" itemvalue="dlib" />
+            <item index="8" class="java.lang.String" itemvalue="action-tutorials-py" />
+            <item index="9" class="java.lang.String" itemvalue="ament-copyright" />
+            <item index="10" class="java.lang.String" itemvalue="ament-pep257" />
+            <item index="11" class="java.lang.String" itemvalue="ament-cpplint" />
+            <item index="12" class="java.lang.String" itemvalue="ament-xmllint" />
+            <item index="13" class="java.lang.String" itemvalue="ament-package" />
+            <item index="14" class="java.lang.String" itemvalue="ament-lint-cmake" />
+            <item index="15" class="java.lang.String" itemvalue="action-tutorials-interfaces" />
+            <item index="16" class="java.lang.String" itemvalue="ament-cppcheck" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
