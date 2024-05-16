@@ -21,38 +21,63 @@ class gr_interface:
         self.debateTime=10
         self.debateSide=""
         self.speakingText = ""
+        self.attack = """
+[공격적인 어조 확인]
+- 의견이나 주장이 상대방을 비방하거나 공격적인 어조로 전달되었는지 확인해주세요.
 
+[공격적인 어휘 사용 확인]
+- 특정 어휘나 표현이 상대방에게 공격적으로 향하고 있는지 확인해주세요.
+
+[공격성 점수 확인]
+- 토론 태도에 따른 공격성이 0부터 10까지의 범위 중 어느 정도인지 점수를 매겨주세요.
+"""
 
     def generate_feedback(self, opinion, evaluation_criteria, category):
-        print(evaluation_criteria)
         if category == "입론":
             template = """
     ======= 입론 피드백 =======
-    [용어 정의가 명확한가] : {}
-    
-    [주장의 근거가 논리적이고 타당한가]: {}
-    
-    [논거가 객관적이고 신뢰할 수 있는가]: {}
+    {}
     ========================
     """
 
         elif category == "변론":
             template = """
     ======= 변론 피드백 =======
-    [최종 변론이 명확하고 간결한가]: {}
-    
-    [핵심 포인트가 잘 전달되었는가]: {}
-    
-    [주장이 타당하고 객관적으로 보이는가]: {}
+    {}
     ========================
     """
+
+        elif category == "공격성 평가":
+            template = """
+    ======= 공격성 피드백 =======
+    {}
+    ========================
+    """
+
         # 평가 기준과 의견을 결합하여 모델에 전달
         prompt = f"평가 기준: {evaluation_criteria}\n의견: {opinion}"
         # 각 의견에 대한 피드백 생성
-        response = self.model.generate_content(prompt, safety_settings={'HARASSMENT':'block_none'})
+        response = self.model.generate_content(prompt, safety_settings={'HARASSMENT': 'block_none'})
         # 피드백 문자열 반환
         feedback = response.text
         return template.format(feedback, feedback, feedback)
+
+    def detect_aggression_with_count(self, input_text):
+        aggressive_words = ["시발", "씨발", "시바", "개새끼", "미친놈", "미친새끼", "병신", "ㅅㅂ", "ㅆㅂ"]
+        aggression_count = 0
+        aggressive_word_list = []
+
+        for word in aggressive_words:
+            if word in input_text:
+                aggression_count += input_text.count(word)
+                aggressive_word_list.append(word)
+
+        if aggression_count > 0:
+            print("[공격적인 단어가 있는가]: 네, 공격적인 단어가 있습니다.")
+            print("[어떤 단어가 공격적인가]:", ', '.join(aggressive_word_list), "이(가) 공격적으로 사용되었습니다.")
+            print("[공격성 점수]:", aggression_count)
+        else:
+            print("[공격적인 단어가 있는가]: 아니요, 공격적인 단어가 없습니다.")
 
     def FSL(self):
         # few-shot 학습용 데이터
@@ -80,26 +105,42 @@ class gr_interface:
         ]
         # few-shot 학습 적용
         self.model.generate_content(few_shot_samples)
+
     def setting(self, debateRoll, debateTime, debateSide):
         self.category = debateRoll
         self.debateTime = debateTime
         self.debateSide = debateSide
         if self.category == "최종변론":
-            self.criteria = "[최종 변론이 명확하고 간결한가]\n[핵심 포인트가 잘 전달되었는가]\n[주장이 타당하고 객관적으로 보이는가]"
-        else: self.criteria = "[용어 정의가 명확한가]\n[주장의 근거가 논리적이고 타당한가]\n[논거가 객관적이고 신뢰할 수 있는가]"
+            self.criteria = """
+[최종 변론이 명확하고 간결한가]
+- 최종 변론이 명확하고 간결하게 전달되었는지 확인해주세요.
+
+[핵심 포인트가 잘 전달되었는가]
+- 핵심 포인트가 잘 전달되었는지 확인해주세요.
+
+[주장이 타당하고 객관적으로 보이는가]
+- 주장이 타당하고 객관적으로 보이는지 확인해주세요.
+"""
+        else: self.criteria = """
+[용어 정의가 명확한가]
+- 토론에서 사용된 용어의 정의가 명확하게 전달되었는지 확인해주세요.
+
+[주장의 근거가 논리적이고 타당한가]
+- 주장의 근거가 논리적이고 타당한지 확인해주세요.
+
+[논거가 객관적이고 신뢰할 수 있는가]
+- 논거가 객관적이고 신뢰할 수 있는지 확인해주세요.
+"""
         print(self.criteria)
         print(self.category)
         return self.category
+
     def respond(self, opinion, chat_history):  # 채팅봇의 응답을 처리하는 함수를 정의합니다.
-        print()
         bot_message = self.generate_feedback(opinion, self.criteria, self.category)
         chat_history.append((opinion, bot_message))  # 채팅 기록에 사용자의 메시지와 봇의 응답을 추가합니다.
         time.sleep(1)  # 응답 간의 시간 지연을 생성합니다. 이는 봇이 실시간으로 답변하고 있는 것처럼 보이게 합니다.
         return "", chat_history  # 수정된 채팅 기록을 반환합니다.
 
-    # genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-    # model = genai.GenerativeModel('gemini-pro')
-    # FSL()
     def launch_interface(self):
         self.setup_interface()
         self.demo.launch(share=True)
@@ -167,6 +208,7 @@ class gr_interface:
                 # print(text)
             except Exception as e:
                 print("Exception: " + str(e))
+
     def setup_interface(self):
         with self.demo:
             self.FSL()
