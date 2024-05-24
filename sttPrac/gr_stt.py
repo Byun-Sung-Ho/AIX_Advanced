@@ -248,24 +248,29 @@ class gr_interface:
     def setup_interface(self):
         with self.demo:
             self.FSL()
-            chatbot = gr.Chatbot(label="토론창")  # '채팅창'이라는 레이블을 가진 채팅봇 컴포넌트를 생성합니다.
-            msg = gr.Textbox(label="토론 내용")  # '입력'이라는 레이블을 가진 텍스트박스를 생성합니다.
-            with gr.Row():
-                # debateRoll = gr.Textbox(label="입론 or 최종변론 or 반론 입력")
-                # debateTime = gr.Textbox(label="말하는 시간 입력(초)")
-                # debateSide = gr.Textbox(label="찬/반 입력")
-                debateRoll = gr.Dropdown(["입론", "최종변론", "반론"],label="역할 선택")
-                debateTime = gr.Dropdown([10, 2, 3, 4, 5], label="말하는 시간 선택(분)")
-                debateSide = gr.Dropdown(["찬성", "반대"],label="찬반 선택")
-                settingButton = gr.Button("완료")
-            with gr.Row():
-                start = gr.Button("녹음 시작")
-                clear = gr.Button("초기화")  # '초기화'라는 레이블을 가진 버튼을 생성합니다.
+            with gr.Tabs():
+                with gr.TabItem("Setting"):
+                    with gr.Row():
+                        debateRoll = gr.Dropdown(["입론", "최종변론", "반론"], label="역할 선택")
+                        debateTime = gr.Dropdown([10, 2, 3, 4, 5], label="말하는 시간 선택(분)")
+                        debateSide = gr.Dropdown(["찬성", "반대"], label="찬반 선택")
+                        settingButton = gr.Button("완료")
 
-            start.click(self.ver2, [],[msg])
-            msg.submit(self.respond, [msg, chatbot], [msg, chatbot])  # 텍스트박스에 메시지를 입력하고 제출하면 respond 함수가 호출되도록 합니다.
-            settingButton.click(self.setting, [debateRoll,debateTime,debateSide])
+                with gr.TabItem("Feedback"):
+                    chatbot = gr.Chatbot(label="토론창")  # '채팅창'이라는 레이블을 가진 채팅봇 컴포넌트를 생성합니다.
+                    msg = gr.Textbox(label="토론 내용")  # '입력'이라는 레이블을 가진 텍스트박스를 생성합니다.
+
+                    with gr.Row():
+                        start = gr.Button("녹음 시작")
+                        clear = gr.Button("초기화")  # '초기화'라는 레이블을 가진 버튼을 생성합니다.
+
+
+            settingButton.click(self.setting, [debateRoll, debateTime, debateSide])
+            start.click(self.ver2, [], [msg])
+            msg.submit(self.respond, [msg, chatbot],
+                       [msg, chatbot])  # 텍스트박스에 메시지를 입력하고 제출하면 respond 함수가 호출되도록 합니다.
             clear.click(lambda: None, None, chatbot, queue=False)  # '초기화' 버튼을 클릭하면 채팅 기록을 초기화합니다.
+
 
 if __name__ == "__main__":
     poc_interface = gr_interface()
