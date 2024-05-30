@@ -13,7 +13,7 @@ from sttPrac import devidingWav
 class gr_interface:
     def __init__(self):
         genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-1.5-pro-latest')
         self.demo = gr.Blocks()
         self.criteria = ""
         self.category = ""
@@ -21,14 +21,16 @@ class gr_interface:
         self.debateSide=""
         self.speakingText = ""
         self.attack = """
+        공격적인 부분은 토론 상황이기에 사소한 것도 상대에게 상처가 될 가능성이 있다면 공격적이라고 정의한다.
+        
 [공격적인 어조 확인]
-- 주어진 글에 상대방을 비방하거나 공격적인 어조가 있는가.
+- 주어진 글에 상대방을 공격적인 부분이 있는가.
 
 [공격적인 어휘 사용 확인]
-- 주어진 글에 특정 어휘나 표현이 상대방에게 공격적으로 향하고 있는가.
+- 주어진 글에 특정 어휘나 표현이 공격적인가.
 
 [공격성 점수 확인]
-- 주어진 글에서 토론 태도에 따른 공격성이 0부터 10까지의 범위 중 어느 정도인지 점수를 매겨주세요.
+- 주어진 글에서 토론 태도에 따른 공격성이 0부터 10까지의 범위로 점수를 매겨줘.
 """
 
     def generate_feedback(self, opinion, evaluation_criteria, category):
@@ -62,14 +64,14 @@ class gr_interface:
         return template.format(feedback, feedback, feedback)
 
     def detect_aggression_with_count(self, input_text):
-        self.model.generate_content("""너는 공격성 평가를하는 심사위원이다. 앞으로 받을 글에서 나온 내용을 기반으로 평가를 진행하라. 
+        roll_check_agg = """너는 공격성 평가를하는 심사위원이다. 앞으로 받을 글에서 나온 내용을 기반으로 평가를 진행하라. 
         평가를 할때는 반드시 글에 있는 내용을 참조하라
-        판단할 글의 상황은 토론 상황의 일부이다.
-        비속어, 욕설은 공격성을 매우 높게 평가하라
-        이 외 상대방을 인신공격하거나 무시하는 발언은 공격성이 있는 것으로 판단하라
-        인신공격이나 무시의 정도에 따라 공격성의 정도를 구분하여 점수를 부여하라""", safety_settings={'HARASSMENT': 'block_none'})
+        판단할 글의 상황은 토론 상황의 일부이다. 예의가 부족한것은 공격성이 있음으로 판단된다.
+        상대방을 인신공격하거나 무시하는 발언은 공격성이 있는 것으로 판단하라
+        인신공격이나 무시의 정도에 따라 공격성의 정도를 구분하여 점수를 부여하라
+        """
 
-        prompt = f"평가 기준: {self.attack}\n주어진 글: {input_text}"
+        prompt = f"평가 기준: {self.attack}\n주어진 글: {input_text}\n주어진 역할:{roll_check_agg}"
         response = self.model.generate_content(prompt, safety_settings={'HARASSMENT': 'block_none'})
         feedback = response.text
         template = """
