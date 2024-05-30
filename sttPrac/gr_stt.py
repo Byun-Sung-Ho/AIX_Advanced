@@ -1,15 +1,17 @@
 import gradio as gr  # 그라디오 라이브러리를 불러옵니다.
-import random  # 무작위 선택을 위한 라이브러리를 불러옵니다.
-import time  # 시간 지연을 위한 라이브러리를 불러옵니다.
 
 import speech_recognition as sr
-import os
 import time
 import pyaudio
 import wave
 import google.generativeai as genai
 import openai
 import os
+# from google.cloud import speech, storage
+from google.protobuf.json_format import MessageToDict
+from pydub import AudioSegment
+from kiwipiepy import Kiwi
+import pandas as pd
 
 class gr_interface:
     def __init__(self):
@@ -80,15 +82,6 @@ class gr_interface:
     ========================
     """
         return template.format(feedback, feedback, feedback)
-
-        # if aggression_count > 0:
-        #     print("[공격적인 단어가 있는가]: 네, 공격적인 단어가 있습니다.")
-        #     print("[어떤 단어가 공격적인가]:", ', '.join(aggressive_word_list), "이(가) 공격적으로 사용되었습니다.")
-        #     print("[공격성 점수]:", aggression_count)
-        #     return self.model.generate_content(self.attack, safety_settings={'HARASSMENT': 'block_none'})
-        # else:
-        #     print("[공격적인 단어가 있는가]: 아니요, 공격적인 단어가 없습니다.")
-        #     return "[공격적인 단어가 있는가]: 아니요, 공격적인 단어가 없습니다."
 
     def FSL(self):
         # few-shot 학습용 데이터
@@ -251,19 +244,20 @@ class gr_interface:
             with gr.Tabs():
                 with gr.TabItem("Setting"):
                     with gr.Row():
-                        debateRoll = gr.Dropdown(["입론", "최종변론", "반론"], label="역할 선택")
+                        # debateRoll = gr.Textbox(label="입론 or 최종변론 or 반론 입력")
+                        # debateTime = gr.Textbox(label="말하는 시간 입력(초)")
+                        # debateSide = gr.Textbox(label="찬/반 입력")
+                        debateRoll = gr.Dropdown(["입론", "최종변론", "반론"],label="역할 선택")
                         debateTime = gr.Dropdown([10, 2, 3, 4, 5], label="말하는 시간 선택(분)")
-                        debateSide = gr.Dropdown(["찬성", "반대"], label="찬반 선택")
+                        debateSide = gr.Dropdown(["찬성", "반대"],label="찬반 선택")
                         settingButton = gr.Button("완료")
-
                 with gr.TabItem("Feedback"):
                     chatbot = gr.Chatbot(label="토론창")  # '채팅창'이라는 레이블을 가진 채팅봇 컴포넌트를 생성합니다.
                     msg = gr.Textbox(label="토론 내용")  # '입력'이라는 레이블을 가진 텍스트박스를 생성합니다.
-
                     with gr.Row():
+
                         start = gr.Button("녹음 시작")
                         clear = gr.Button("초기화")  # '초기화'라는 레이블을 가진 버튼을 생성합니다.
-
 
             settingButton.click(self.setting, [debateRoll, debateTime, debateSide])
             start.click(self.ver2, [], [msg])
