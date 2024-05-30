@@ -116,14 +116,16 @@ def process_audio_file(audio_file_path, bucket_name, gcs_filename, output_csv_pa
     df.to_csv(output_csv_path, index=False, encoding='utf-8')
 
 
-def work():
+def work(wavFile):
 # 오디오 파일 경로와 출력 CSV 경로 및 출력 오디오 폴더 지정
-    audio_file_path = 'sttPrac/example.wav'  # 오디오 파일 경로
+    audio_file_path = 'example.wav'  # 오디오 파일 경로
     bucket_name = 'onto_bucket'  # Google Cloud Storage 버킷 이름
     gcs_filename = 'audio_file.wav'
-    output_csv_path = 'sttPrac/timestamps.csv'
+    output_csv_path = 'timestamps.csv'
     output_audio_folder = 'segmented_audio'
 
+
+    audio_file_path = wavFile
     # 전체 프로세스 실행
     process_audio_file(audio_file_path, bucket_name, gcs_filename, output_csv_path, output_audio_folder)
 

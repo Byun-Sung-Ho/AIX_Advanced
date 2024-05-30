@@ -7,6 +7,8 @@ import wave
 import google.generativeai as genai
 import os
 
+from sttPrac import devidingWav
+
 
 class gr_interface:
     def __init__(self):
@@ -168,6 +170,9 @@ class gr_interface:
         self.setup_interface()
         self.demo.launch(share=True)
 
+    def do_devidingWav(self):
+        devidingWav.work("output.wav")
+
     def ver2(self):
         # 오디오 녹음 설정
         FORMAT = pyaudio.paInt16  # 16비트 PCM 형식으로 녹음
@@ -249,18 +254,17 @@ class gr_interface:
                     chatbot = gr.Chatbot(label="토론창")  # '채팅창'이라는 레이블을 가진 채팅봇 컴포넌트를 생성합니다.
                     msg = gr.Textbox(label="토론 내용")  # '입력'이라는 레이블을 가진 텍스트박스를 생성합니다.
                     with gr.Row():
-
                         start = gr.Button("녹음 시작")
                         clear = gr.Button("초기화")  # '초기화'라는 레이블을 가진 버튼을 생성합니다.
+                        devide = gr.Button("대화 분리")
 
             settingButton.click(self.setting, [debateRoll, debateTime, debateSide])
             start.click(self.ver2, [], [msg])
             msg.submit(self.respond, [msg, chatbot],
                        [msg, chatbot])  # 텍스트박스에 메시지를 입력하고 제출하면 respond 함수가 호출되도록 합니다.
             clear.click(lambda: None, None, chatbot, queue=False)  # '초기화' 버튼을 클릭하면 채팅 기록을 초기화합니다.
-
+            devide.click(fn=self.do_devidingWav)
 
 if __name__ == "__main__":
-    # devidingWav.work()
     poc_interface = gr_interface()
     poc_interface.launch_interface()
