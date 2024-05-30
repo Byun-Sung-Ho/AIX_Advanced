@@ -5,13 +5,8 @@ import time
 import pyaudio
 import wave
 import google.generativeai as genai
-import openai
 import os
-# from google.cloud import speech, storage
-from google.protobuf.json_format import MessageToDict
-from pydub import AudioSegment
-from kiwipiepy import Kiwi
-import pandas as pd
+
 
 class gr_interface:
     def __init__(self):
@@ -266,5 +261,6 @@ class gr_interface:
 
 
 if __name__ == "__main__":
+    # devidingWav.work()
     poc_interface = gr_interface()
     poc_interface.launch_interface()

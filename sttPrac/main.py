@@ -1,11 +1,10 @@
 import speech_recognition as sr
-import os
 import time
 import pyaudio
 import wave
 import google.generativeai as genai
-import openai
 import os
+
 
 def getAudio():
     r = sr.Recognizer()
