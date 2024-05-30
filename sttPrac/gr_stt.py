@@ -183,8 +183,8 @@ class gr_interface:
         RATE = 44100  # 샘플링 속도(Hz)
         CHUNK = 1024  # 버퍼 크기
 
-        # 오디오 녹음 시간 설정 (초)
-        RECORD_SECONDS = self.debateTime
+        # 오디오 녹음 시간 설정 (min)
+        RECORD_SECONDS = self.debateTime * 60
         # 저장할 오디오 파일 이름
         WAVE_OUTPUT_FILENAME = "output.wav"
 
@@ -231,6 +231,7 @@ class gr_interface:
                 text = recognizer.recognize_google(audio_data, language="ko-KR")
                 with open("memo.txt", 'w') as f:
                     f.write(str(text) + '\n')
+                # text = devidingWav.workSTT(audio_file_path)
                 self.speakingText = text
                 print(self.speakingText)
                 return self.speakingText
@@ -250,7 +251,7 @@ class gr_interface:
                         # debateTime = gr.Textbox(label="말하는 시간 입력(초)")
                         # debateSide = gr.Textbox(label="찬/반 입력")
                         debateRoll = gr.Dropdown(["입론", "최종변론", "반론"],label="역할 선택")
-                        debateTime = gr.Dropdown([10, 2, 3, 4, 5], label="말하는 시간 선택(분)")
+                        debateTime = gr.Dropdown([10,1, 2, 3, 4, 5], label="말하는 시간 선택(분)")
                         debateSide = gr.Dropdown(["찬성", "반대"],label="찬반 선택")
                         settingButton = gr.Button("완료")
                 with gr.TabItem("Feedback"):

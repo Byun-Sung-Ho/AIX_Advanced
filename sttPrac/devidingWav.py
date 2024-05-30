@@ -123,10 +123,10 @@ def work(wavFile):
     gcs_filename = 'audio_file.wav'
     output_csv_path = 'timestamps.csv'
     output_audio_folder = 'segmented_audio'
-
+    res = ""
 
     audio_file_path = wavFile
     # 전체 프로세스 실행
     process_audio_file(audio_file_path, bucket_name, gcs_filename, output_csv_path, output_audio_folder)
 
-
+    return res
