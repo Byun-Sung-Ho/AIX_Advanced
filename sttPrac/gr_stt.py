@@ -65,14 +65,13 @@ class gr_interface:
         return template.format(feedback, feedback, feedback)
 
     def detect_aggression_with_count(self, input_text):
-        aggressive_words = ["시발", "씨발", "시바", "개새끼", "미친놈", "미친새끼", "병신", "ㅅㅂ", "ㅆㅂ"]
-        aggression_count = 0
-        aggressive_word_list = []
-        for word in aggressive_words:
-            if word in input_text:
-                aggression_count += input_text.count(word)
-                aggressive_word_list.append(word)
-        self.model.generate_content("너는 공격성 평가를하는 심사위원이다. 앞으로 받을 글에서 나온 내용을 기반으로 평가를 진행하라. 평가를 할때는 반드시 글에 있는 내용을 참조하라", safety_settings={'HARASSMENT': 'block_none'})
+        self.model.generate_content("""너는 공격성 평가를하는 심사위원이다. 앞으로 받을 글에서 나온 내용을 기반으로 평가를 진행하라. 
+        평가를 할때는 반드시 글에 있는 내용을 참조하라
+        판단할 글의 상황은 토론 상황의 일부이다.
+        비속어, 욕설은 공격성을 매우 높게 평가하라
+        이 외 상대방을 인신공격하거나 무시하는 발언은 공격성이 있는 것으로 판단하라
+        인신공격이나 무시의 정도에 따라 공격성의 정도를 구분하여 점수를 부여하라""", safety_settings={'HARASSMENT': 'block_none'})
+
         prompt = f"평가 기준: {self.attack}\n주어진 글: {input_text}"
         response = self.model.generate_content(prompt, safety_settings={'HARASSMENT': 'block_none'})
         feedback = response.text
