@@ -5,6 +5,9 @@ import os
 import librosa
 from tensorflow import keras
 
+from sttPrac import devidingWav
+
+
 def compute_melspectrogram_(audio_path, n_mels=128, hop_length=512, n_fft=2048):
     y, sr = librosa.load(audio_path)
     mel_spec = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=n_mels, hop_length=hop_length, n_fft=n_fft)
@@ -47,6 +50,7 @@ def process_predict(model_path, test_csv_path, output_csv_path):
     return csv
 
 def work():
+    devidingWav.work("output.wav")
     model_path = 'model_9.h5'
     test_csv_path = 'timestamps.csv'
     output_csv_path = 'result.csv'

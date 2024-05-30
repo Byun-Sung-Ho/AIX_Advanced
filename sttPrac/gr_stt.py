@@ -7,7 +7,7 @@ import wave
 import google.generativeai as genai
 import os
 
-from sttPrac import devidingWav
+from sttPrac import devidingWav, emotionFeedback
 
 
 class gr_interface:
@@ -161,11 +161,12 @@ class gr_interface:
 
     def respond(self, opinion, chat_history):  # 채팅봇의 응답을 처리하는 함수를 정의합니다.
         bot_message = self.generate_feedback(opinion, self.criteria, self.category)
-        chat_history.append((opinion, bot_message))  # 채팅 기록에 사용자의 메시지와 봇의 응답을 추가합니다.
+        chat_history.append(("전반 평가", bot_message))  # 채팅 기록에 사용자의 메시지와 봇의 응답을 추가합니다.
         time.sleep(1)  # 응답 간의 시간 지연을 생성합니다. 이는 봇이 실시간으로 답변하고 있는 것처럼 보이게 합니다.
         attack_bot_message = self.detect_aggression_with_count(opinion)
         chat_history.append(("공격성 검사", attack_bot_message))  # 채팅 기록에 사용자의 메시지와 봇의 응답을 추가합니다.
         time.sleep(1)  # 응답 간의 시간 지연을 생성합니다. 이는 봇이 실시간으로 답변하고 있는 것처럼 보이게 합니다.
+        chat_history.append(("부정적 감정 검사", emotionFeedback.work()))
         return "", chat_history  # 수정된 채팅 기록을 반환합니다.
 
     def launch_interface(self):
