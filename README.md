@@ -1,1 +1,12 @@
 # ONTO
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/7eb7a7ab-58ab-472d-95fd-26c3ceaeaa09)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/c1d80d42-ac3d-411c-86cf-31b56e554131)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/604cc976-9204-45bb-85f4-4736d80060b7)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/a4614261-ff16-4348-b23b-3e88b15105fe)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/f9c74708-5f92-42d9-9698-9cd59df82e5f)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/88b57a34-0117-4fc4-83aa-69ac8ff428c5)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/2f692004-90be-4f7e-963b-878180b6e2ea)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/d75807b9-e9b9-423a-9bd9-c36672712a60)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/773afc66-5dd0-4a82-9d18-428a93b549cd)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/3b395793-ecda-44a1-966b-bc1eb67f0b35)
+![image](https://github.com/Byun-Sung-Ho/AIX_Advanced/assets/58453038/d3791871-9d2f-4df8-b5cc-2e115422b75c)
